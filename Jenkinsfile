@@ -1,22 +1,32 @@
 pipeline {
-    agent any
-    tools{
+	agent any
+	tools{
         maven 'maven-3.9.9'
-    }
+    	}
+	stages{
+		stage('Checkout Code'){
+			steps{
+				checkout scm
+				}
+			}
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
+	stage('Build'){
+		steps{
+		bat "mvn clean install -Dmaven.test.skip-true"
+		}
+	}
 
-        stage('Deploy to tomcat server') {
-            steps {
-                    deploy adapters: [tomcat9(credentialsId: 'a68e0dfe-f85c-4b8b-87f0-3aba419695a1', path: '', url: 'http://54.151.134.78:8080/')], contextPath: 'maven-web-app', war: '**/*.war'
+	stage('Archive Artifact'){
+		steps{
+		archiveArtifact artifact: 'target/*.war' 
+		}
+	}
 
-                }
+	stage('Deployment'){
+		steps{
+		deploy adapters: [tomcat9(credentialsId: 'e03d3314-895c-4135-a5cc-3a4fe4caa3e8', path: '', url: 'http://192.11.15.124:8080/')], contextPath: null, war: 'target/*.war'
+		}
+	}
 
-        }
-    }
+	}
 }
