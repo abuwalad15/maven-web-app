@@ -15,6 +15,12 @@ pipeline {
 		sh "mvn clean install"
 		}
 	}
+
+	stage('Archive Artifact'){
+		steps{
+		archiveArtifact artifact: 'target/*.war'
+		}
+	}
 		
 	stage('Deployment'){
 		steps{
