@@ -18,7 +18,7 @@ pipeline {
 
 	stage('Deploy to tomcat Container'){
 		steps{
-		deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'f5c28479-1e5c-4f04-a325-82453c9eacf7', path: '', url: 'http://192.11.15.17:8282/')], contextPath: 'maven-web-app', war: '**/*.war'
+		deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat9', path: '', url: 'http://192.11.15.17:8282/')], contextPath: 'maven-web-app', war: 'target/*.war'
 
 		}
 	}
